@@ -18,11 +18,8 @@ float soma_prod_fpu(float *v_a, float *v_b, int size)
 {
   register int i;
   float soma = 0.;
-  for( int j=0 ; j<1 ; j++ )
   for( i=0 ; i<size; i++ ) {
-        soma += v_a[i]*v_b[i];
-	soma += v_a[i]*v_a[i];
-	soma += v_b[i]*v_b[i];
+          soma += v_a[i]*v_b[i];
   }
 
   resultado = soma;

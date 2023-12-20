@@ -12,20 +12,17 @@
 #include <unistd.h>
 
 
-#define V_SIZE 10000000
+#define V_SIZE 100000000
 //#define V_SIZE 80
 
 #define TIME_DIF(t2,t1)	( ((t2).tv_sec-(t1).tv_sec) * 1000000L + ((t2).tv_usec-(t1).tv_usec) )
 
-  /* Vectores de Entrada */
-//float v_a[V_SIZE] __attribute__ ((aligned (64)));
-//float v_b[V_SIZE] __attribute__ ((aligned (64)));
 
-float v_a[V_SIZE];
-float v_b[V_SIZE];
+float v_a[V_SIZE] __attribute__ ((aligned (64)));
+float v_b[V_SIZE] __attribute__ ((aligned (64)));
+		/* Vectores de Entrada */
+		/*  Resultado = Sum(v_a[i]*v_b[i])  */
 
-
-		/*  Resultado = Sum(   v_a[i]*v_b[i]) + v_a[i]*v_a[i] + v_b[i]*v_b[i] )  */
 
 float soma_prod_fpu(float*, float*, int);
 float soma_prod_sse(float*, float*, int);
@@ -45,12 +42,12 @@ int main()
 
   for( i=0 ; i<V_SIZE ; i++ )		/* Preenche os Vectores de entrada com valores aleatorios */
   {
-	  v_a[i] = (float)(2.*(float)rand()/(float)RAND_MAX)-1.;
-	  v_b[i] = (float)(2.*(float)rand()/(float)RAND_MAX)-1.;
+	  v_a[i] = (float)(200.*rand()/RAND_MAX)-100.;
+	  v_b[i] = (float)(200.*rand()/RAND_MAX)-100.;
   }
+
   printf("Entradas prontas\n");
   sleep(2);
-
   /*
    * FPU
    *
@@ -60,6 +57,8 @@ int main()
   gettimeofday(&t1,&tz);
   printf("FPU:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
   sleep(1);
+
+
 
   /*
    * Soft Floating Point
@@ -90,7 +89,6 @@ int main()
   gettimeofday(&t1,&tz);
   printf("SSE:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
   sleep(1);
-
   /*
    *    AVX 
    *
