@@ -33,8 +33,11 @@ float soma_prod_avx512(float*, float*, int);
 
 extern float res_soft;
 float resultado;
-int main()
+int main(int argc, char **argv)
 {
+  int testsDisabled = 0;
+  if ( argc>1 ) testsDisabled = atoi(argv[1]);
+
   struct timeval  t0, t1;
   struct timezone tz;
 
@@ -42,8 +45,8 @@ int main()
 
   for( i=0 ; i<V_SIZE ; i++ )		/* Preenche os Vectores de entrada com valores aleatorios */
   {
-	  v_a[i] = (float)(200.*rand()/RAND_MAX)-100.;
-	  v_b[i] = (float)(200.*rand()/RAND_MAX)-100.;
+      v_a[i] = (float)(200.*rand()/RAND_MAX)-100.;
+      v_b[i] = (float)(200.*rand()/RAND_MAX)-100.;
   }
 
   printf("Entradas prontas\n");
@@ -52,62 +55,73 @@ int main()
    * FPU
    *
    */
-  gettimeofday(&t0,&tz);
-  soma_prod_fpu(v_a, v_b, V_SIZE);
-  gettimeofday(&t1,&tz);
-  if ( resultado!=0. ) printf("FPU:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
-  sleep(1);
-
+  if ( ! ( testsDisabled & 0x01 ) ) {
+      gettimeofday(&t0,&tz);
+      soma_prod_fpu(v_a, v_b, V_SIZE);
+      gettimeofday(&t1,&tz);
+      if ( resultado!=0. ) printf("FPU:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+      sleep(1);
+  }
 
 
   /*
    * Soft Floating Point
    *
    */
-  gettimeofday(&t0,&tz);
-  soma_prod_softfp(v_a, v_b, V_SIZE);
-  gettimeofday(&t1,&tz);
-  if ( resultado!=0. ) printf("SoftFP:    %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
-  sleep(1);
+  if ( ! ( testsDisabled & 0x02 ) ) {
+      gettimeofday(&t0,&tz);
+      soma_prod_softfp(v_a, v_b, V_SIZE);
+      gettimeofday(&t1,&tz);
+      if ( resultado!=0. ) printf("SoftFP:    %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+      sleep(1);
+  }
 
   /*
    * 	SSE Assembly
    *
    */
-  gettimeofday(&t0,&tz);
-  soma_prod_assemb(v_a, v_b, V_SIZE);;
-  gettimeofday(&t1,&tz);
-  if ( resultado!=0. ) printf("SSEassemb: %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
-  sleep(1);
+  if ( ! ( testsDisabled & 0x04 ) ) {
+      gettimeofday(&t0,&tz);
+      soma_prod_assemb(v_a, v_b, V_SIZE);;
+      gettimeofday(&t1,&tz);
+      if ( resultado!=0. ) printf("SSEassemb: %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+      sleep(1);
+  }
 
   /*
    *    SEE Intrinsic
    *
    */
-  gettimeofday(&t0,&tz);
-  soma_prod_sse(v_a, v_b, V_SIZE);
-  gettimeofday(&t1,&tz);
-  if ( resultado!=0. ) printf("SSE:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
-  sleep(1);
+  if ( ! ( testsDisabled & 0x08 ) ) {
+      gettimeofday(&t0,&tz);
+      soma_prod_sse(v_a, v_b, V_SIZE);
+      gettimeofday(&t1,&tz);
+      if ( resultado!=0. ) printf("SSE:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+      sleep(1);
+  }
   /*
    *    AVX 
    *
    */
-  gettimeofday(&t0,&tz);
-  soma_prod_avx(v_a, v_b, V_SIZE);;
-  gettimeofday(&t1,&tz);
-  if ( resultado!=0. ) printf("AVX:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
-  sleep(1);
+  if ( ! ( testsDisabled & 0x10 ) ) {
+      gettimeofday(&t0,&tz);
+      soma_prod_avx(v_a, v_b, V_SIZE);
+      gettimeofday(&t1,&tz);
+      if ( resultado!=0. ) printf("AVX:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+      sleep(1);
+  }
 
   /*
    *    AVX512
    *
    */
-  gettimeofday(&t0,&tz);
-  soma_prod_avx512(v_a, v_b, V_SIZE);;
-  gettimeofday(&t1,&tz);
-  if ( resultado!=0. ) printf("AVX512:    %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
-  return 0;
+  if ( ! ( testsDisabled & 0x20 ) ) {
+      gettimeofday(&t0,&tz);
+      soma_prod_avx512(v_a, v_b, V_SIZE);
+      gettimeofday(&t1,&tz);
+      if ( resultado!=0. ) printf("AVX512:    %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+      return 0;
+  }
 
 }
 
