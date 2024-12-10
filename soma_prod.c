@@ -55,7 +55,7 @@ int main()
   gettimeofday(&t0,&tz);
   soma_prod_fpu(v_a, v_b, V_SIZE);
   gettimeofday(&t1,&tz);
-  printf("FPU:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+  if ( resultado!=0. ) printf("FPU:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
   sleep(1);
 
 
@@ -67,7 +67,7 @@ int main()
   gettimeofday(&t0,&tz);
   soma_prod_softfp(v_a, v_b, V_SIZE);
   gettimeofday(&t1,&tz);
-  printf("SoftFP:    %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+  if ( resultado!=0. ) printf("SoftFP:    %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
   sleep(1);
 
   /*
@@ -77,7 +77,7 @@ int main()
   gettimeofday(&t0,&tz);
   soma_prod_assemb(v_a, v_b, V_SIZE);;
   gettimeofday(&t1,&tz);
-  printf("SSEassemb: %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+  if ( resultado!=0. ) printf("SSEassemb: %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
   sleep(1);
 
   /*
@@ -87,7 +87,7 @@ int main()
   gettimeofday(&t0,&tz);
   soma_prod_sse(v_a, v_b, V_SIZE);
   gettimeofday(&t1,&tz);
-  printf("SSE:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+  if ( resultado!=0. ) printf("SSE:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
   sleep(1);
   /*
    *    AVX 
@@ -96,7 +96,7 @@ int main()
   gettimeofday(&t0,&tz);
   soma_prod_avx(v_a, v_b, V_SIZE);;
   gettimeofday(&t1,&tz);
-  printf("AVX:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+  if ( resultado!=0. ) printf("AVX:       %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
   sleep(1);
 
   /*
@@ -106,7 +106,7 @@ int main()
   gettimeofday(&t0,&tz);
   soma_prod_avx512(v_a, v_b, V_SIZE);;
   gettimeofday(&t1,&tz);
-  printf("AVX512:    %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
+  if ( resultado!=0. ) printf("AVX512:    %7ld useg, soma=%f\n", TIME_DIF(t1,t0), resultado);
   return 0;
 
 }

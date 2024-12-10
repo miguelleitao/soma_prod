@@ -23,13 +23,13 @@ soma_prod_fpu.o: soma_prod_fpu.c
 	cc $(CFLAGS)   -c -o $@ -mfpmath=387 $<
 
 soma_prod_sse.o: soma_prod_sse.c
-	cc $(CFLAGS)   -c -o $@ -msse $<
+	cc $(CFLAGS)   -c -o $@ -march=native $<
 
 soma_prod_avx.o: soma_prod_avx.c
-	cc $(CFLAGS)   -c -o $@ -mavx $<
+	cc $(CFLAGS)   -c -o $@ -march=native $<
 
 soma_prod_avx512.o: soma_prod_avx512.c
-	cc $(CFLAGS)   -c -o $@ -mavx512f $<
+	cc $(CFLAGS)   -c -o $@ -march=native $<
 
 soma_prod_softfp.o: soma_prod_fpu.c
 	cc $(CFLAGS)   -c -o $@ -mfpmath=387 -msoft-float -mno-fp-ret-in-387 -DSOFT_FP $<

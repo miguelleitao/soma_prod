@@ -14,6 +14,7 @@ extern float resultado;
 
 float soma_prod_avx(float *v_a, float *v_b, int size)
 {
+  #ifdef __AVX__
   register int i;
   __m256 v_soma_r;
   float *soma_p;
@@ -37,6 +38,10 @@ float soma_prod_avx(float *v_a, float *v_b, int size)
    */
 
   return resultado = soma_p[0] + soma_p[1] + soma_p[2] + soma_p[3] + soma_p[4] + soma_p[5] + soma_p[6] + soma_p[7];
+#else
+  printf("AVX is not available.\n");
+  return resultado = 0.;
+#endif
 }
 
 
