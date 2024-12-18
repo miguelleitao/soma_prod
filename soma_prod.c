@@ -77,7 +77,7 @@ int main(int argc, char **argv)
   }
 
   /*
-   * 	SSE2 Assembly
+   * 	SSE Assembly
    *
    */
   if ( ! ( testsDisabled & 0x04 ) ) {

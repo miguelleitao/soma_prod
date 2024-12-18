@@ -14,14 +14,14 @@ extern float resultado;
 
 float soma_prod_avx512(float *v_a, float *v_b, int size)
 {
-  #ifdef __AVX512__
+  #ifdef __AVX512F__
   register int i;
   __m512 v_soma_r;
   float *soma_p;
   soma_p = (float *) &v_soma_r;
   v_soma_r = _mm512_set_ps(0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.);
 
-  for( int j=0 ; j<nCycles ; j++ )
+  //for( int j=0 ; j<nCycles ; j++ )
   for( i=0 ; i<size ; i+=16 ) 
 	v_soma_r = _mm512_add_ps(v_soma_r, _mm512_mul_ps( _mm512_load_ps(v_a+i), _mm512_load_ps(v_b+i)));
 
